@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t allesmiguel/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run allesmiguel/react-test npm test -- --coverage
+
+after_sucess:
+  - docker build -t allesmiguel/client-image ./client
+  - docker build -t allesmiguel/nginx-image ./nginx
+  - docker build -t allesmiguel/server-image ./server
+  - docker build -t allesmiguel/worker-image ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push allesmiguel/client-image
+  - docker push allesmiguel/nginx-image
+  - docker push allesmiguel/server-image
+  - docker push allesmiguel/worker-image
