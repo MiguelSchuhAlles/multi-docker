@@ -1,0 +1,36 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "allesmiguel/client-image",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "allesmiguel/server-image",
+            "hostname": "api",
+            "essential": false           
+        },
+        {
+            "name": "worker",
+            "image": "allesmiguel/worker-image",
+            "hostname": "worker",
+            "essential": false           
+        },
+        {
+            "name": "nginx",
+            "image": "allesmiguel/nginx-image",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": ["client", "server"]
+        }
+    ]
+}

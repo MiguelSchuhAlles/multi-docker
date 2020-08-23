@@ -20,3 +20,15 @@ after_sucess:
   - docker push allesmiguel/nginx-image
   - docker push allesmiguel/server-image
   - docker push allesmiguel/worker-image
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-2
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-us-east-2-382126322862
+  bucklet_path: docker_multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
